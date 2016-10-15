@@ -48,39 +48,72 @@ var quotes = [
 	},
 ];
 
-// event listener to respond to "Show another quote" button clicks
+function getRandomNumber(min, max){
 
+	//get a random number between zero and the highest index in quotes array
+	return Math.floor(Math.random() * (max - min)) + min;
+};
 
-// when user clicks anywhere on the button, the "printQuote" function is called
-//document.getElementById('loadQuote').addEventListener("click", printQuote, false);
-
+//This function gets a random object from the quotes array
 function getRandomQuote(){
 	
-	//get a random number between zero and the highest index in quotes array
-	var min = 0;
-	var max = quotes.length;
-	var randomNumber = Math.floor(Math.random() * (max - min)) + min;
+	var randomNumber = getRandomNumber(0, quotes.length);
 
 	//return random array item in quotes array
-
 	return quotes[randomNumber];
 };
 
+//This function takes the random quote object from the getRandomQuote function and build up a string based on the properties of the object
 function printQuote(){
 	var selectedQuote = getRandomQuote();
 
 	var quoteString = '<p class="quote"> ';
 		quoteString += selectedQuote.quote;
-		quoteString += ' </p> ';
+		quoteString += ' </p>';
 		quoteString += '<p class="source"> '
 		quoteString += selectedQuote.source;
+	
+	//check for empty citation property and don't add citation block if citation property empty
+	if (selectedQuote.citation !== undefined){ 
 		quoteString += ' <span class="citation"> ';
 		quoteString += selectedQuote.citation;
 		quoteString += ' </span>';
+	};
+
+	//check for empty year property and don't add year block if citation property empty
+	if (selectedQuote.year !== undefined){
 		quoteString += ' <span class="year"> ';
 		quoteString += selectedQuote.year;
-		quoteString += ' </span></p>'; 
+		quoteString += ' </span>'
+	};
+		quoteString += ' </p>';
+
+		document.getElementById('quote-box').innerHTML = quoteString;
 };
+
+//This function stores a random color and adds the random color to background property of body
+function randomBackgroundColor(){
+	var randomColorValue = "rgb(" + getRandomNumber(0, 256) + "," + getRandomNumber(0, 256) + "," + getRandomNumber(0, 256) + ")";
+	
+	document.body.style.background = randomColorValue;
+};
+
+//store quote button
+var quoteButton = document.getElementById('loadQuote');
+
+// event listener to respond to "Show another quote" button clicks
+// when user clicks anywhere on the button, the "printQuote" function is called
+quoteButton.addEventListener("click", printQuote, false);
+
+//change background color of page when quote changes
+quoteButton.addEventListener("click", randomBackgroundColor, false);
+
+
+
+
+
+
+
 
 
 

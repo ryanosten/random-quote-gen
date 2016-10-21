@@ -48,6 +48,9 @@ var quotes = [
 	},
 ];
 
+//create an array to store quotes used
+var quotesUsed = [0];
+
 function getRandomNumber(min, max){
 
 	//get a random number between zero and the highest index in quotes array
@@ -57,8 +60,20 @@ function getRandomNumber(min, max){
 //This function gets a random object from the quotes array
 function getRandomQuote(){
 	
+	//generate a random #
 	var randomNumber = getRandomNumber(0, quotes.length);
 
+	// check if randomNumber is present in quotesUsed array, and if all quotes have been used once
+	while (quotesUsed.includes(randomNumber) && quotesUsed.length !== quotes.length){
+		//generate a new randomNumber
+		randomNumber = getRandomNumber(0, quotes.length);
+	}
+	
+	//if all quotes have not been used, add the randomNumber to quotesUsed array
+	if (quotesUsed.length !== quotes.length){
+		quotesUsed.push(randomNumber);
+	}
+	
 	//return random array item in quotes array
 	return quotes[randomNumber];
 };
@@ -107,6 +122,12 @@ quoteButton.addEventListener("click", printQuote, false);
 
 //change background color of page when quote changes
 quoteButton.addEventListener("click", randomBackgroundColor, false);
+
+
+
+
+
+	
 
 
 

@@ -1,5 +1,9 @@
-//Create an array of objects to hold quotes
+//-------------------- GLOBAL VARIABLES --------------------//
 
+//create an array to store quotes used
+var quotesUsed = [0];
+
+//Create an array of objects to hold quotes
 var quotes = [
 	
 	{
@@ -48,80 +52,86 @@ var quotes = [
 	},
 ];
 
-//create an array to store quotes used
-var quotesUsed = [0];
+//store quote button
+var quoteButton = document.getElementById('loadQuote');
 
+// -------------------- FUNCTIONS, FUNCTIONS, FUNCTIONS --------------------//
+
+//This function gets a random number between zero and the highest index element in quotes array
 function getRandomNumber(min, max){
 
-	//get a random number between zero and the highest index in quotes array
 	return Math.floor(Math.random() * (max - min)) + min;
-};
+}
 
 //This function gets a random object from the quotes array
 function getRandomQuote(){
-	
-	//generate a random #
+
+	//get random number between 0 and length of the quote array
 	var randomNumber = getRandomNumber(0, quotes.length);
 
-	// check if randomNumber is present in quotesUsed array, and if all quotes have been used once
+	// check if randomNumber is present in quotesUsed array, and if all quotes have been used once. If randomNumber is already used (present in quotesUsed array), and not all quotes have been used, then get a new randomNumber.
 	while (quotesUsed.includes(randomNumber) && quotesUsed.length !== quotes.length){
-		//generate a new randomNumber
 		randomNumber = getRandomNumber(0, quotes.length);
 	}
 	
-	//if all quotes have not been used, add the randomNumber to quotesUsed array
+	//if all quotes have not been used, then add the randomNumber to quotesUsed array
 	if (quotesUsed.length !== quotes.length){
 		quotesUsed.push(randomNumber);
 	}
 	
-	//return random array item in quotes array
+	//return random array item in quotes array 
 	return quotes[randomNumber];
-};
+}
 
 //This function takes the random quote object from the getRandomQuote function and build up a string based on the properties of the object
 function printQuote(){
 	var selectedQuote = getRandomQuote();
 
-	var quoteString = '<p class="quote"> ';
+	var quoteString = '<p class="quote">';
 		quoteString += selectedQuote.quote;
-		quoteString += ' </p>';
-		quoteString += '<p class="source"> '
+		quoteString += '</p>';
+		quoteString += '<p class="source">';
 		quoteString += selectedQuote.source;
 	
 	//check for empty citation property and don't add citation block if citation property empty
 	if (selectedQuote.citation !== undefined){ 
-		quoteString += ' <span class="citation"> ';
+		quoteString += '<span class="citation">';
 		quoteString += selectedQuote.citation;
-		quoteString += ' </span>';
-	};
+		quoteString += '</span>';
+	}
 
 	//check for empty year property and don't add year block if citation property empty
 	if (selectedQuote.year !== undefined){
-		quoteString += ' <span class="year"> ';
+		quoteString += '<span class="year">';
 		quoteString += selectedQuote.year;
-		quoteString += ' </span>'
-	};
-		quoteString += ' </p>';
+		quoteString += '</span>';
+	}
+		quoteString += '</p>';
 
+		//add the built up string to html
 		document.getElementById('quote-box').innerHTML = quoteString;
-};
+}
 
-//This function stores a random color and adds the random color to background property of body
+//This function generates and stores a random color and adds the random color to background property of body and button
 function randomBackgroundColor(){
 	var randomColorValue = "rgb(" + getRandomNumber(0, 256) + "," + getRandomNumber(0, 256) + "," + getRandomNumber(0, 256) + ")";
 	
-	document.body.style.background = randomColorValue;
-};
+	//change background color of button and body when user clicks the button
+	document.body.style.backgroundColor = randomColorValue;
+	quoteButton.style.backgroundColor = randomColorValue;
+}
 
-//store quote button
-var quoteButton = document.getElementById('loadQuote');
+// -------------------- EVENT HANDLERS --------------------//
 
 // event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
 quoteButton.addEventListener("click", printQuote, false);
 
-//change background color of page when quote changes
+//change background color of page when user clicks the button
 quoteButton.addEventListener("click", randomBackgroundColor, false);
+
+//change quote automatically every 30 seconds
+window.setInterval(printQuote, 30000);
 
 
 

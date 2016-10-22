@@ -69,10 +69,10 @@ body {
   color: #fff;
   background-color: #36b55c;
   padding: 15px 0;
-  transition: .5s ;
+  transition: 0s ;
 }
 #loadQuote:hover {
-  background-color: rgba(255,255,255,.25);
+  background-color: rgba(255,255,255,.25) !important;
 }
 #loadQuote:focus {
   outline: none;
